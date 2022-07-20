@@ -1,0 +1,35 @@
+name: VPC deployment in AWS
+on:
+  push:
+    branches:
+      main  # clone the container and deploy through main branch
+jobs:
+   terraform-deploy:
+      runs-on: ubuntu-latest
+      permissions:
+        packages: write
+        contents: read
+        id-token: write
+      steps:
+        - name: Clone our repository # we clone the repositoty
+          uses: actions/checkout@v3 # use the script 
+
+
+        - name: AWS Authentication # we talked to aws 
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            role-to-assume: arn:aws:iam::539350506885:role/github-actions-oidc
+            aws-region: eu-west-1
+            role-session-name: GithubVPCDeploy
+
+        - name: Terraform Set up
+          uses: hashicorp/setup-terraform@v1
+
+        - name: Terraform Initialization
+          run: terraform init
+
+        - name: Terraform planning
+          run:  terraform plan
+
+        - name: Terraform applying
+          run:  terraform apply -auto-approve
