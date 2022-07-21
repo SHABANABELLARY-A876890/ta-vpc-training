@@ -1,6 +1,6 @@
 #we are creating internet route for the nat gateway
 resource "aws_route_table" "internet_route_table" {
-  vpc_id = aws_vpc.lab_vpc.id
+  vpc_id = aws_vpc.lab-vpc.id
   #vpc_id = aws_vpc.la
 
   route {
@@ -13,7 +13,7 @@ resource "aws_route_table" "internet_route_table" {
 }
 
 resource "aws_route_table" "nat_route_table" {
-  vpc_id = aws_vpc.lab_vpc.id
+  vpc_id = aws_vpc.lab.id
   route {
     cidr_block = "0.0.0.0/0" 
     gateway_id = aws_nat_gateway.nat_gw.id
